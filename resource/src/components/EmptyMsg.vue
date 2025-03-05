@@ -18,7 +18,7 @@
     .empty-middle {
         border-radius: 5px;
         padding: 20px 0 30px;
-        width: 200px;
+        width: 300px;
         text-align: center;
         background: #E6F2FF;
 

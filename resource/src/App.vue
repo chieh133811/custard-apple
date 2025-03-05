@@ -4,13 +4,13 @@ import router from '@/router';
 import i18n, { messages } from '@/i18n';
 
 const routes = router.getRoutes();
-const changeLanguage = (event: Event) => {
-    const target = event.target as HTMLSelectElement;
-    const lang = target.value as 'en' | 'zh-TW';
-    i18n.global.locale = lang;
+const changeLanguage = () => {
+    const langSwitch = {
+        en: 'zh-TW',
+        'zh-TW': 'en'
+    };
+    i18n.global.locale = langSwitch[i18n.global.locale] as 'en' | 'zh-TW';
 };
-
-// import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
@@ -25,15 +25,7 @@ const changeLanguage = (event: Event) => {
                 </RouterLink>
             </nav>
             <div class="header-choose-lang">
-                <select @change="changeLanguage">
-                    <option
-                        v-for="(value, key) in messages"
-                        :class="`option-${key}`"
-                        :value="key"
-                    >
-                        {{ key }}
-                    </option>
-                </select>
+                <button @click="changeLanguage">A 文</button>
             </div>
         </div>
     </header>
@@ -49,20 +41,29 @@ const changeLanguage = (event: Event) => {
 
     .header-wrapper {
         margin: 0 auto;
-        padding-top: 10px;
+        padding: 10px;
         max-width: 1200px;
         display: flex;
         align-items: center;
-        gap: 60px;
+        gap: 20px;
 
-        .header-logo {}
+        .header-logo {
+            img {
+                display: block;
+                width: 283px;
+                height: 71px;
+            }
+        }
         .header-nav {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
             flex: 1 1 auto;
 
             a {
-                margin-right: 10px;
                 border-radius: 6px;
-                padding: 0 20px;
+                width: 60px;
+                text-align: center;
 
                 &:hover,
                 &.router-link-active {

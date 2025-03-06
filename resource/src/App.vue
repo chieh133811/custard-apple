@@ -24,9 +24,10 @@ const changeLanguage = () => {
                     {{ $t(String(route.name)) }}
                 </RouterLink>
             </nav>
-            <div class="header-choose-lang">
-                <button @click="changeLanguage">A 文</button>
-            </div>
+            <button :class="['header-choose-lang', `current-lang-${i18n.global.locale}`]" @click="changeLanguage">
+                <span class="lang-en">A</span>
+                <span class="lang-tw">文</span>
+            </button>
         </div>
     </header>
     <RouterView />
@@ -37,7 +38,7 @@ const changeLanguage = () => {
 .page-header {
     position: sticky;
     top: 0;
-    background-color: #EEE;
+    background-color: var(--second-bg-1);
 
     .header-wrapper {
         margin: 0 auto;
@@ -45,7 +46,7 @@ const changeLanguage = () => {
         max-width: 1200px;
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: 10px;
 
         .header-logo {
             img {
@@ -59,21 +60,53 @@ const changeLanguage = () => {
             justify-content: space-evenly;
             align-items: center;
             flex: 1 1 auto;
+            gap: 2px;
 
             a {
-                border-radius: 6px;
-                width: 60px;
+                border-radius: 8px;
+                padding: 3px 8px;
                 text-align: center;
 
                 &:hover,
                 &.router-link-active {
-                    color: #EEE;
-                    background-color: #424242;
+                    color: var(--main-text-1);
+                    background-color: var(--main-text-hover-1);
                     transition: background-color ease-out 0.3s, color ease-out 0.3s;
                 }
             }
         }
-        .header-choose-lang {}
+        .header-choose-lang {
+            position: relative;
+            background: linear-gradient(60deg, rgba(255, 255, 255, .3) 30%, rgba(255, 255, 255, 0)),
+                linear-gradient(70deg, var(--button-normal) 0 50%, var(--button-hover) 50% 100%);
+            width: 50px;
+            height: 40px;
+            line-height: 30px;
+            border-radius: 20px;
+
+            span {
+                position: absolute;
+                &:first-child {
+                    color: var(--main-text-1);
+                    top: 23%;
+                    left: 18%;
+                    font-family: serif;
+                    line-height: normal;
+                    font-weight: bold;
+                    font-size: 18px;
+                }
+                &:last-child {
+                    color: var(--main-text-1);
+                    top: 5%;
+                    right: 15%;
+                }
+            }
+
+            &.current-lang-en {
+                background: linear-gradient(60deg, rgba(255, 255, 255, .3) 30%, rgba(255, 255, 255, 0)),
+                    linear-gradient(70deg, var(--button-hover) 0 50%, var(--button-normal) 50% 100%);
+            }
+        }
     }
 }
 header {

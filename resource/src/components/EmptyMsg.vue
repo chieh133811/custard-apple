@@ -20,7 +20,7 @@
         padding: 20px 0 30px;
         width: 300px;
         text-align: center;
-        background: #E6F2FF;
+        background: var(--default-bg);
 
         img {
             display: block;

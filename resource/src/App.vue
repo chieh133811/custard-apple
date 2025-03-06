@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import router from '@/router';
-import i18n, { messages } from '@/i18n';
+import { RouterView } from 'vue-router'
+import i18n from '@/i18n';
+import RouteList from '@/components/RouteList.vue';
 
-const routes = router.getRoutes();
 const changeLanguage = () => {
     const langSwitch = {
         en: 'zh-TW',
@@ -20,9 +19,7 @@ const changeLanguage = () => {
                 <img src="@/assets/logo.png" alt="cyh logo" />
             </div>
             <nav class="header-nav">
-                <RouterLink v-for="route in routes" :to="route.path">
-                    {{ $t(String(route.name)) }}
-                </RouterLink>
+                <RouteList />
             </nav>
             <button :class="['header-choose-lang', `current-lang-${i18n.global.locale}`]" @click="changeLanguage">
                 <span class="lang-en">A</span>
@@ -62,7 +59,7 @@ const changeLanguage = () => {
             flex: 1 1 auto;
             gap: 2px;
 
-            a {
+            ::v-deep(a) {
                 border-radius: 8px;
                 padding: 3px 8px;
                 text-align: center;
@@ -108,12 +105,5 @@ const changeLanguage = () => {
             }
         }
     }
-}
-header {
-    /* line-height: 1.5;
-    max-height: 100vh; */
-}
-
-@media (min-width: 1024px) {
 }
 </style>

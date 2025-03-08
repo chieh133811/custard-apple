@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import { ref } from 'vue';
+import { RouterView } from 'vue-router';
 import i18n from '@/i18n';
 import RouteList from '@/components/RouteList.vue';
 
+const navBtnStatus = ref('');
+const switchNav = () => {
+    navBtnStatus.value = navBtnStatus.value === '' ? 'active' : '';
+};
 const changeLanguage = () => {
     const langSwitch = {
         en: 'zh-TW',
@@ -21,9 +26,24 @@ const changeLanguage = () => {
             <nav class="header-nav">
                 <RouteList />
             </nav>
-            <button :class="['header-choose-lang', `current-lang-${i18n.global.locale}`]" @click="changeLanguage">
-                <span class="lang-en">A</span>
-                <span class="lang-tw">文</span>
+            <div class="header-center">
+                <div :class="['nav-btn-wrap', navBtnStatus]">
+                    <button
+                        class="nav-btn"
+                        @click="switchNav"
+                    >
+                        <FontAwesomeIcon icon="bars" />
+                    </button>
+                    <div v-if="navBtnStatus === 'active'" class="nav-pop">
+                        <RouteList />
+                    </div>
+                </div>
+            </div>
+            <button
+                :class="['header-choose-lang', `current-lang-${i18n.global.locale}`]"
+                @click="changeLanguage"
+            >
+                <FontAwesomeIcon icon="language" />
             </button>
         </div>
     </header>
@@ -39,7 +59,7 @@ const changeLanguage = () => {
 
     .header-wrapper {
         margin: 0 auto;
-        padding: 10px;
+        padding: 10px 20px;
         max-width: 1200px;
         display: flex;
         align-items: center;
@@ -63,45 +83,85 @@ const changeLanguage = () => {
                 border-radius: 8px;
                 padding: 3px 8px;
                 text-align: center;
+                color: var(--main-text-1);
 
                 &:hover,
                 &.router-link-active {
-                    color: var(--main-text-1);
-                    background-color: var(--main-text-hover-1);
+                    color: var(--main-text-hover-1);
+                    background-color: var(--hover-bg-1);
                     transition: background-color ease-out 0.3s, color ease-out 0.3s;
                 }
             }
         }
+        .header-center {
+            display: none;
+            flex: 1 1 auto;
+        }
         .header-choose-lang {
-            position: relative;
-            background: linear-gradient(60deg, rgba(255, 255, 255, .3) 30%, rgba(255, 255, 255, 0)),
-                linear-gradient(70deg, var(--button-normal) 0 50%, var(--button-hover) 50% 100%);
-            width: 50px;
-            height: 40px;
-            line-height: 30px;
-            border-radius: 20px;
-
-            span {
-                position: absolute;
-                &:first-child {
-                    color: var(--main-text-1);
-                    top: 23%;
-                    left: 18%;
-                    font-family: serif;
-                    line-height: normal;
-                    font-weight: bold;
-                    font-size: 18px;
-                }
-                &:last-child {
-                    color: var(--main-text-1);
-                    top: 5%;
-                    right: 15%;
-                }
-            }
+            font-size: 40px;
+            color: var(--button-normal);
+            transition: color ease-in-out .2s;
 
             &.current-lang-en {
-                background: linear-gradient(60deg, rgba(255, 255, 255, .3) 30%, rgba(255, 255, 255, 0)),
-                    linear-gradient(70deg, var(--button-hover) 0 50%, var(--button-normal) 50% 100%);
+                color: var(--button-hover);
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .page-header {
+        .header-wrapper {
+            .header-nav {
+                display: none;
+            }
+
+            .header-center {
+                display: flex;
+                flex-direction: column;
+                align-items: end;
+                padding-right: 10px;
+
+                .nav-btn-wrap {
+                    position: relative;
+
+                    .nav-btn {
+                        font-size: 30px;
+                        color: var(--button-normal);
+
+                    }
+
+                    .nav-pop {
+                        position: absolute;
+                        top: 100%;
+                        right: 0;
+                        border-radius: 5px;
+                        padding: 15px 0;
+
+                        ::v-deep(a) {
+                            display: block;
+                            padding: 5px 10px;
+                            white-space: nowrap;
+                            font-size: 16px;
+                            color: var(--main-text-hover-1);
+
+                            &:hover {
+                                background: var(--hover-bg-1);
+                                font-weight: bold;
+                            }
+                        }
+                    }
+
+                    &.active {
+                        .nav-btn {
+                            color: var(--button-hover);
+                        }
+
+                        .nav-pop {
+                            background: var(--button-hover);
+                        }
+                    }
+                }
             }
         }
     }

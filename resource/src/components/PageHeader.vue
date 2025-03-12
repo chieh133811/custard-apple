@@ -10,7 +10,7 @@ const changeLanguage = () => {
         en: 'zh-TW',
         'zh-TW': 'en'
     };
-    i18n.global.locale = langSwitch[i18n.global.locale] as 'en' | 'zh-TW';
+    i18n.global.locale.value = langSwitch[i18n.global.locale.value] as "zh-TW" | "en";
 };
 </script>
 

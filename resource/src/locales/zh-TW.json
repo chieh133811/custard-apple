@@ -6,5 +6,8 @@
     "track-spend": "記帳",
     "msg": "留言板",
     "register": "註冊",
-    "building": "等待建置中"
+    "building": "等待建置中",
+    "user-defined": "自定義",
+    "automatic": "自動編碼",
+    "submit": "送出"
 }

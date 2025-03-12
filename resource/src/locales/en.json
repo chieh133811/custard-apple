@@ -6,5 +6,8 @@
     "track-spend": "Track Spending",
     "msg": "Leave Message",
     "register": "Register",
-    "building": "Building in progress"
+    "building": "Building in progress",
+    "user-defined": "User-defined",
+    "automatic": "Automatic",
+    "submit": "Submit"
 }

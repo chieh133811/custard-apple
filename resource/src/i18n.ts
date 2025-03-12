@@ -8,6 +8,7 @@ export const messages = {
 };
 
 const i18n = createI18n({
+    legacy: false,
     locale: 'zh-TW', // 預設語言
     fallbackLocale: 'zh-TW', // 當找不到翻譯時使用的語言
     messages

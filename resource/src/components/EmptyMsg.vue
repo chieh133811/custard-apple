@@ -1,7 +1,9 @@
 <template>
     <div class="empty-msg">
         <div class="empty-middle">
-            <img src="@/assets/empty-icon.png" />
+            <div class="icon">
+                <FontAwesomeIcon icon="circle-exclamation" />
+            </div>
             {{ $t('building') }}
         </div>
     </div>
@@ -21,12 +23,11 @@
         width: 300px;
         text-align: center;
         background: var(--default-bg);
+        font-size: 18px;
 
-        img {
-            display: block;
-            width: 100px;
-            height: 100px;
-            margin: 0 auto;
+        .icon {
+            padding: 8px 0;
+            font-size: 60px;
         }
     }
 }

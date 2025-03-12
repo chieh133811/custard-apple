@@ -1,10 +1,15 @@
 :root {
     --main-text-1: #424242;
     --main-text-hover-1: #eee;
+    --main-text-disabled-1: #828282;
 
     --hover-bg-1: #424242;
+    --hover-bg-disabled-1: #d6d6d6;
     --second-bg-1: #e1eaf2;
     --default-bg: #eeeef3;
+    --pop-mask-bg: rgba(0, 0, 0, .4);
+    --pop-block-bg: #ebeef3;
+    --pop-close: #eeeef3;
 
     --button-normal: #333;
     --button-hover: #194c93;
@@ -17,10 +22,18 @@
 html {
     font-family: monospace, "Microsoft YaHei","Heiti";
     font-size: clamp(12px, 2vw, 16px);
+    height: 100%;
 }
 
 body {
     margin: 0;
+    height: 100%;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100%
 }
 
 a {

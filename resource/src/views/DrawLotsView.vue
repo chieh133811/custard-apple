@@ -50,7 +50,7 @@ function deleteOption(index: number) {
 
 function startDrawingLots() {
     const all = options.value.length;
-    if (!all) return;
+    if (!all || optionsEdit.value.length) return;
 
     result.value = options.value[Math.floor(Math.random() * all)];
     showPopBox.value = true;
@@ -105,7 +105,7 @@ function startDrawingLots() {
                     >
                         <FontAwesomeIcon
                             v-if="optionsEdit.includes(index)"
-                            icon="check"
+                            :icon="!option ? 'ban' : 'check'"
                         />
                         <FontAwesomeIcon
                             v-else
@@ -125,7 +125,10 @@ function startDrawingLots() {
             這個還沒寫ฅ(๑*д*๑)ฅ
         </div>
         <button
-            :class="{'start-drawing-lots': true, disabled: !options.length}"
+            :class="{
+                'start-drawing-lots': true,
+                disabled: !options.length || optionsEdit.length
+            }"
             @click="startDrawingLots"
         >
             {{ $t('start-drawing-lots') }}
@@ -192,7 +195,7 @@ function startDrawingLots() {
             .setting-input {
                 border-radius: 6px;
                 border: 3px solid var(--input-1-border);
-                padding-left: 20px;
+                padding: 0 20px;
                 width: 75%;
                 height: 60px;
                 box-sizing: border-box;
@@ -235,7 +238,7 @@ function startDrawingLots() {
                 align-items: center;
                 border-radius: 5px;
                 min-height: 50px;
-                padding: 0 10px;
+                padding: 5px 10px;
                 background: var(--button-3);
 
                 .option-num {
@@ -249,12 +252,21 @@ function startDrawingLots() {
                     text-align: center;
                 }
 
+                .option-edit-input,
                 .option-text {
                     padding: 5px 0;
                     font-size: 20px;
                     line-height: 20px;
+                    padding: 0 10px;
                     width: calc(100% - 140px);
                     word-wrap: break-word;
+                    box-sizing: border-box;
+                }
+
+                .option-edit-input {
+                    border-radius: 5px;
+                    border: 3px solid var(--input-1-border);
+                    height: 40px;
                 }
 
                 .edit,
@@ -267,6 +279,11 @@ function startDrawingLots() {
 
                 .edit {
                     background: var(--button-4);
+
+                    &.disabled {
+                        background: var(--button-2-disabled);
+                        cursor: not-allowed;
+                    }
                 }
 
                 .delete {

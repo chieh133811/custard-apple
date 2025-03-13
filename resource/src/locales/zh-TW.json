@@ -9,5 +9,8 @@
     "building": "等待建置中",
     "user-defined": "自定義",
     "automatic": "自動編碼",
+    "start-drawing-lots": "開始抽籤",
+    "drawing-results": "抽籤結果",
+    "enter-options": "請輸入選項",
     "submit": "送出"
 }

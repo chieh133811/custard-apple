@@ -5,7 +5,8 @@ import {
     faXmark,
     faCircleExclamation,
     faPencil,
-    faTrashCan
+    faTrashCan,
+    faCheck
 } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { type App } from 'vue';
@@ -16,6 +17,7 @@ library.add(faXmark);
 library.add(faCircleExclamation);
 library.add(faPencil);
 library.add(faTrashCan);
+library.add(faCheck);
 
 export default {
     install: (app: App) => {

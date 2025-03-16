@@ -14,6 +14,6 @@ export default defineConfig({
     },
     base: process.env.NODE_ENV === 'production' ? '/custard-apple/' : '/',
     build: {
-        outDir: '../'
+        outDir: '../docs'
     }
 })

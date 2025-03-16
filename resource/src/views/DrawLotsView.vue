@@ -169,7 +169,7 @@ function startDrawingLots() {
 <style lang="scss" scoped>
 $height-draw-lots-top: 60px;
 $height-setting-bar: 60px;
-$height-operate-btn-wrap: 60px;
+$height-operate-btn-wrap: 80px;
 $height-option-box-wrap: calc(100% - $height-draw-lots-top - $height-setting-bar - $height-operate-btn-wrap);
 
 .draw-lots-top {
@@ -348,6 +348,7 @@ $height-option-box-wrap: calc(100% - $height-draw-lots-top - $height-setting-bar
     align-items: center;
     padding: 0 18px;
     height: $height-operate-btn-wrap;
+    background-color: var(--white-2);
 
     .clear-drawing-lots,
     .start-drawing-lots {
@@ -356,6 +357,7 @@ $height-option-box-wrap: calc(100% - $height-draw-lots-top - $height-setting-bar
         padding: 0 20px;
         width: 49%;
         height: 56px;
+        font-size: 20px;
     }
     .clear-drawing-lots {
         background-color: var(--red-1);

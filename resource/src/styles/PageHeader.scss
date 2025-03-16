@@ -1,5 +1,6 @@
 .page-header {
     height: 60px;
+    background-color: var(--dark-1);
 
     .header-wrapper {
         margin: 0 auto;
@@ -9,7 +10,6 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        background-color: var(--dark-1);
 
         .header-logo {
             img {

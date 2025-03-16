@@ -55,15 +55,19 @@
     :root {}
 } */
 
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
 html {
     font-family: monospace, "Microsoft YaHei","Heiti";
     font-size: clamp(12px, 2vw, 16px);
-    height: 100%;
 }
 
 body {
     margin: 0;
-    height: 100%;
     touch-action: manipulation;
 }
 

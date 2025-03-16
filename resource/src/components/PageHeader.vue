@@ -10,7 +10,9 @@ const changeLanguage = () => {
         en: 'zh-TW',
         'zh-TW': 'en'
     };
-    i18n.global.locale.value = langSwitch[i18n.global.locale.value] as "zh-TW" | "en";
+    const targetLang = langSwitch[i18n.global.locale.value] as "zh-TW" | "en";
+    i18n.global.locale.value = targetLang;
+    document.cookie = `lang=${targetLang}`;
 };
 </script>
 

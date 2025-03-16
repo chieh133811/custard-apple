@@ -1,5 +1,26 @@
 :root {
-    --main-text-1: #424242;
+    /* 預設-淺色系 黑白灰 */
+    --dark-1: #000;
+    --dark-2: #292929;
+    --dark-3: #333;
+    --gray-1: #555;
+    --gray-2: #8c8c8c;
+    --gray-3: #abaaaa;
+    --white-1: #dfdddd;
+    --white-2: #eee;
+    --white-3: #fff;
+    --red-1: #ff837e;
+    --red-2: #ffa5a2;
+    --blue-1: #99befd;
+    --blue-2: #c3d9ff;
+    --green-1: #6bff7d;
+    --green-2: #a7ffb1;
+    --yellow-1: #fdff6a;
+    --yellow-2: #fdff9b;
+
+    --mask: rgba(0, 0, 0, .4);
+
+    /* --main-text-1: #424242;
     --main-text-hover-1: #eee;
     --main-text-disabled-1: #828282;
 
@@ -27,7 +48,7 @@
     --button-3-hover: #FFF;
 
     --button-4: #84db86;
-    --button-5: #f7b3b3;
+    --button-5: #f7b3b3; */
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -71,6 +92,10 @@ input {
     &:focus-visible {
         outline: none;
     }
+}
+
+svg, .svg-inline--fa {
+    display: block;
 }
 
 /* @media (max-width: 1200px) {}

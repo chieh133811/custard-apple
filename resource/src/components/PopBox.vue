@@ -44,6 +44,7 @@ watch(
     bottom: 0;
     left: 0;
     right: 0;
+    z-index: 100;
 
     .pop-box-mask {
         position: absolute;
@@ -51,7 +52,7 @@ watch(
         top: 0;
         width: 100%;
         height: 100%;
-        background: var(--pop-mask-bg);
+        background-color: var(--mask);
     }
 
     .pop-center-block {
@@ -60,11 +61,12 @@ watch(
         top: 20%;
         transform: translateX(-50%);
         border-radius: 20px;
-        background: var(--pop-block-bg);
+        border: 2px solid var(--dark-3);
+        width: 80%;
+        background-color: var(--white-1);
         
         .pop-content {
             padding: 20px;
-            min-width: 200px;
             max-height: calc(80vh - 140px);
             overflow: auto;
 
@@ -77,10 +79,20 @@ watch(
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            bottom: -60px;
-            font-size: 40px;
-            color: var(--pop-close);
-            cursor: pointer;
+            bottom: -56px;
+            border-radius: 50%;
+            border: 2px solid var(--dark-3);
+            padding: 6px 8px;
+            background-color: var(--white-1);
+            font-size: 24px;
+            color: var(--dark-3);
+
+            &:hover,
+            &:active {
+                border-color: 2px solid var(--white-1);
+                background-color: var(--dark-3);
+                color: var(--white-1);
+            }
         }
     }
 }

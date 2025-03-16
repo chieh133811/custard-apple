@@ -24,9 +24,9 @@ const changeLanguage = () => {
                 <RouteList />
             </nav>
             <div class="header-center">
-                <div :class="{'nav-btn-wrap': true, active: showPopBox}">
+                <div class="nav-btn-wrap">
                     <button
-                        class="nav-btn"
+                        :class="{'nav-btn': true, active: showPopBox}"
                         @click="showPopBox = true"
                     >
                         <FontAwesomeIcon icon="bars" />
@@ -34,7 +34,7 @@ const changeLanguage = () => {
                 </div>
             </div>
             <button
-                :class="['header-choose-lang', `current-lang-${i18n.global.locale}`]"
+                :class="['header-choose-lang', `current-lang-${i18n.global.locale.value}`]"
                 @click="changeLanguage"
             >
                 <FontAwesomeIcon icon="language" />

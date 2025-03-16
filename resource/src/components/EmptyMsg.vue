@@ -22,12 +22,9 @@
         padding: 20px 0 30px;
         width: 300px;
         text-align: center;
-        background: var(--default-bg);
-        font-size: 18px;
 
         .icon {
             padding: 8px 0;
-            font-size: 60px;
         }
     }
 }

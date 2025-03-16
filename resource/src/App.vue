@@ -5,14 +5,5 @@ import PageHeader from '@/components/PageHeader.vue';
 
 <template>
     <PageHeader />
-    <main class="page-main">
-        <RouterView />
-    </main>
-    <footer class="page-footer"></footer>
+    <RouterView />
 </template>
-
-<style lang="scss" scoped>
-.page-main {
-    flex: 1 1 auto;
-}
-</style>

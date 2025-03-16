@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import EmptyMsg from '@/components/EmptyMsg.vue';
 import PopBox from '@/components/PopBox.vue';
 
 const activeTab = ref(1);
@@ -13,14 +11,16 @@ const inputValue = ref('');
 const result = ref('');
 const showPopBox = ref(false);
 
-const { t } = useI18n();
 const tabs = [
-    { id: 1, name: t('user-defined') },
-    { id: 2, name: t('automatic') }
+    { id: 1, name: 'user-defined' },
+    { id: 2, name: 'automatic' }
 ];
 
 function setOption() {
-    if (!inputValue.value) return;
+    if (!inputValue.value && theInput.value) {
+        theInput.value.focus();
+        return;
+    }
 
     options.value.push(inputValue.value);
     inputValue.value = '';
@@ -48,6 +48,12 @@ function deleteOption(index: number) {
     options.value.splice(index, 1)
 }
 
+function clearDrawingLots() {
+    const all = options.value.length;
+    if (!all || optionsEdit.value.length) return;
+    options.value = [];
+}
+
 function startDrawingLots() {
     const all = options.value.length;
     if (!all || optionsEdit.value.length) return;
@@ -58,7 +64,10 @@ function startDrawingLots() {
 </script>
 
 <template>
-    <div class="draw-lots">
+    <div class="draw-lots-top">
+        <div class="tab-title">
+            {{ $t('draw-lots') }}：
+        </div>
         <div class="tab-wrap">
             <button
                 v-for="tab in tabs"
@@ -66,64 +75,75 @@ function startDrawingLots() {
                 :key="`draw-lots-tab-${tab.id}`"
                 @click="activeTab = tab.id"
             >
-                {{ tab.name }}
+                {{ $t(tab.name) }}
             </button>
         </div>
-        <div v-if="activeTab === 1" class="draw-lots-content">
-            <div class="setting-bar">
+    </div>
+    <template v-if="activeTab === 1">
+        <div class="setting-bar">
+            <input
+                ref="theInput"
+                v-model="inputValue"
+                type="text"
+                :placeholder="$t('enter-options')"
+                class="setting-input"
+                @keydown="handleKeyDown"
+            >
+            <button
+                :class="{'setting-btn': true, disabled: !inputValue}"
+                @click="setOption"
+            >
+                {{ $t('submit') }}
+            </button>
+        </div>
+        <div class="option-box-wrap">
+            <div v-for="(option, index) in options" class="option-box">
+                <div class="option-num">
+                    {{ index + 1 }}
+                </div>
                 <input
-                    ref="theInput"
-                    v-model="inputValue"
-                    type="text"
+                    v-if="optionsEdit.includes(index)"
+                    v-model="options[index]"
                     :placeholder="$t('enter-options')"
-                    class="setting-input"
-                    @keydown="handleKeyDown"
+                    class="option-edit-input"
+                    type="text"
                 >
+                <div v-else class="option-text">{{ option }}</div>
                 <button
-                    :class="{'setting-btn': true, disabled: !inputValue}"
-                    @click="setOption"
+                    :class="{edit: true, disabled: !option}"
+                    @click="editOption(index)"
                 >
-                    {{ $t('submit') }}
+                    <FontAwesomeIcon
+                        v-if="optionsEdit.includes(index)"
+                        :icon="!option ? 'ban' : 'check'"
+                    />
+                    <FontAwesomeIcon
+                        v-else
+                        icon="pencil"
+                    />
+                    </button>
+                <button
+                    class="delete"
+                    @click="deleteOption(index)"
+                >
+                    <FontAwesomeIcon icon="trash-can" />
                 </button>
             </div>
-            <div class="option-box-wrap">
-                <div v-for="(option, index) in options" class="option-box">
-                    <div class="option-num">
-                        {{ index + 1 }}
-                    </div>
-                    <input
-                        v-if="optionsEdit.includes(index)"
-                        v-model="options[index]"
-                        :placeholder="$t('enter-options')"
-                        class="option-edit-input"
-                        type="text"
-                    >
-                    <div v-else class="option-text">{{ option }}</div>
-                    <button
-                        :class="{edit: true, disabled: !option}"
-                        @click="editOption(index)"
-                    >
-                        <FontAwesomeIcon
-                            v-if="optionsEdit.includes(index)"
-                            :icon="!option ? 'ban' : 'check'"
-                        />
-                        <FontAwesomeIcon
-                            v-else
-                            icon="pencil"
-                        />
-                        </button>
-                    <button
-                        class="delete"
-                        @click="deleteOption(index)"
-                    >
-                        <FontAwesomeIcon icon="trash-can" />
-                    </button>
-                </div>
-            </div>
         </div>
-        <div v-if="activeTab === 2" class="draw-lots-content">
-            這個還沒寫ฅ(๑*д*๑)ฅ
-        </div>
+    </template>
+    <div v-if="activeTab === 2">
+        這個還沒寫ฅ(๑*д*๑)ฅ
+    </div>
+    <div class="operate-btn-wrap">
+        <button
+            :class="{
+                'clear-drawing-lots': true,
+                disabled: !options.length || optionsEdit.length
+            }"
+            @click="clearDrawingLots"
+        >
+            {{ $t('clear-drawing-lots') }}
+        </button>
         <button
             :class="{
                 'start-drawing-lots': true,
@@ -137,7 +157,9 @@ function startDrawingLots() {
     <PopBox v-model:showPopBox="showPopBox">
         <template #pop-content>
             <div class="result-content">
-                <div class="result-title">{{ $t('drawing-results') }}</div>
+                <div class="result-top">
+                    <span class="result-title">{{ $t('drawing-results') }}</span>
+                </div>
                 <div class="drawing-results">{{ result }}</div>
             </div>
         </template>
@@ -145,183 +167,250 @@ function startDrawingLots() {
 </template>
 
 <style lang="scss" scoped>
-.draw-lots {
+$height-draw-lots-top: 60px;
+$height-setting-bar: 60px;
+$height-operate-btn-wrap: 60px;
+$height-option-box-wrap: calc(100% - $height-draw-lots-top - $height-setting-bar - $height-operate-btn-wrap);
+
+.draw-lots-top {
     display: flex;
-    flex-direction: column;
-    padding: 30px;
-    height: calc(100% - 80px);
-    background: var(--second-bg-2);
+    justify-content: center;
+    align-items: center;
+    height: $height-draw-lots-top;
+    align-self: center;
+
+    .tab-title {
+        position: relative;
+        padding-right: 10px;
+        font-size: 20px;
+
+        &::after {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-75%);
+            z-index: -1;
+            content: '';
+            border-radius: 40%;
+            width: 60%;
+            height: 24px;
+            background-color: var(--blue-1);
+        }
+    }
 
     .tab-wrap {
-        display: flex;
-        justify-content: space-between;
+        display: inline-flex;
+        justify-content: center;
         text-align: center;
+        border-radius: 20px;
+        border: 2px solid var(--dark-1);
 
         .tab {
-            border-radius: 10px 10px 0 0;
-            padding: 12px 0;
-            width: calc(50% - 1px);
-            font-size: 22px;
-            color: var(--main-text-hover-1);
-            background: var(--button-2-not-active);
+            border-radius: 20px;
+            padding: 6px 18px;
+            font-size: 18px;
 
-            &:hover,
             &.active {
-                position: relative;
-                background: var(--button-2);
+                background-color: var(--blue-1);
             }
+
             &:hover {
-                background: var(--button-2-hover);
+                background-color: var(--blue-2);
             }
-            &.active {
-                background: var(--button-2);
-                color: var(--main-text-1);
-            }
-        }
-    }
-
-    .draw-lots-content {
-        display: flex;
-        flex-direction: column;
-        flex: 1 1 auto;
-        border-radius: 0 0 6px 6px;
-        padding: 20px;
-        background: var(--button-2);
-
-        .setting-bar {
-            display: flex;
-            justify-content: space-between;
-
-            .setting-input {
-                border-radius: 6px;
-                border: 3px solid var(--input-1-border);
-                padding: 0 20px;
-                width: 75%;
-                height: 60px;
-                box-sizing: border-box;
-                font-size: 22px;
-            }
-
-            .setting-btn {
-                border-radius: 5px;
-                border: 3px solid var(--button-2-border);
-                width: 20%;
-                background: var(--button-3);
-                font-size: 24px;
-                color: var(--main-text-1);
-
-                &:hover {
-                    background: var(--button-2-border);
-                    color: var(--main-text-hover-1);
-                }
-
-                &.disabled {
-                    background: var(--button-2-disabled);
-                    color: var(--main-text-1);
-                    cursor: not-allowed;
-                }
-            }
-        }
-
-        .option-box-wrap {
-            display: flex;
-            flex-direction: column;
-            flex: 1 1 auto;
-            gap: 10px;
-            overflow: auto;
-            padding-top: 10px;
-            height: calc(100vh - 500px);
-
-            .option-box {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-radius: 5px;
-                min-height: 50px;
-                padding: 5px 10px;
-                background: var(--button-3);
-
-                .option-num {
-                    border-radius: 20px;
-                    border: 3px solid var(--button-normal);
-                    width: 28px;
-                    height: 28px;
-                    line-height: 28px;
-                    font-size: 20px;
-                    font-weight: bold;
-                    text-align: center;
-                }
-
-                .option-edit-input,
-                .option-text {
-                    padding: 5px 0;
-                    font-size: 20px;
-                    line-height: 20px;
-                    padding: 0 10px;
-                    width: calc(100% - 140px);
-                    word-wrap: break-word;
-                    box-sizing: border-box;
-                }
-
-                .option-edit-input {
-                    border-radius: 5px;
-                    border: 3px solid var(--input-1-border);
-                    height: 40px;
-                }
-
-                .edit,
-                .delete {
-                    border-radius: 10px;
-                    border: 3px solid var(--button-normal);
-                    width: 40px;
-                    height: 40px;
-                }
-
-                .edit {
-                    background: var(--button-4);
-
-                    &.disabled {
-                        background: var(--button-2-disabled);
-                        cursor: not-allowed;
-                    }
-                }
-
-                .delete {
-                    background: var(--button-5);
-                }
-            }
-        }
-    }
-    .start-drawing-lots {
-        margin-top: 16px;
-        border-radius: 40px;
-        border: 5px solid var(--main-text-hover-1);
-        height: 80px;
-        background: var(--button-hover);
-        color: var(--main-text-hover-1);
-        font-size: 30px;
-
-        &.disabled {
-            background: var(--button-2-disabled);
-            color: var(--button-2-border);
-            cursor: not-allowed;
         }
     }
 }
 
+.setting-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 18px;
+    height: $height-setting-bar;
+
+    .setting-input {
+        border-radius: 6px;
+        border: 2px solid var(--dark-1);
+        padding: 0 20px;
+        width: 75%;
+        height: 52px;
+        box-sizing: border-box;
+        font-size: 20px;
+    }
+
+    .setting-btn {
+        border-radius: 6px;
+        border: 2px solid var(--dark-1);
+        width: 24%;
+        height: 52px;
+        background-color: var(--green-1);
+        font-size: 20px;
+
+        &:hover,
+        &:active {
+            background-color: var(--green-2);
+        }
+
+        &.disabled {
+            cursor: not-allowed;
+            background-color: var(--gray-3);
+        }
+    }
+}
+
+.option-box-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 18px;
+    height: $height-option-box-wrap;
+    box-sizing: border-box;
+    overflow: auto;
+
+    .option-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 30px;
+        border: 2px solid var(--dark-3);
+        padding: 4px 10px;
+
+        .option-num {
+            border-radius: 20px;
+            border: 2px solid var(--dark-3);
+            background-color: var(--white-1);
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .option-edit-input,
+        .option-text {
+            padding: 5px 0;
+            line-height: 20px;
+            padding: 0 10px;
+            width: calc(100% - 140px);
+            word-wrap: break-word;
+            box-sizing: border-box;
+            font-size: 20px;
+            line-height: 20px;
+        }
+
+        .option-edit-input {
+            border-radius: 5px;
+            height: 40px;
+            border: 2px solid var(--dark-3);
+        }
+
+        .edit,
+        .delete {
+            border-radius: 10px;
+            border: 2px solid var(--dark-3);
+            width: 40px;
+            height: 40px;
+            font-size: 22px;
+
+            svg {
+                display: inline-block;
+            }
+        }
+
+        .edit {
+            background-color: var(--blue-1);
+
+            &:hover,
+            &:active {
+                background-color: var(--blue-2);
+            }
+        }
+
+        .delete {
+            background-color: var(--red-1);
+
+            &:hover,
+            &:active {
+                background-color: var(--red-2);
+            }
+        }
+
+        .edit.disabled,
+        .delete.disabled {
+            cursor: not-allowed;
+            background: var(--gray-3);
+        }
+    }
+}
+
+.operate-btn-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 18px;
+    height: $height-operate-btn-wrap;
+
+    .clear-drawing-lots,
+    .start-drawing-lots {
+        border-radius: 6px;
+        border: 2px solid var(--dark-3);
+        padding: 0 20px;
+        width: 49%;
+        height: 56px;
+    }
+    .clear-drawing-lots {
+        background-color: var(--red-1);
+
+        &:hover,
+        &:active {
+            background-color: var(--red-2);
+        }
+    }
+    .start-drawing-lots {
+        background-color: var(--green-1);
+
+        &:hover,
+        &:active {
+            background-color: var(--green-2);
+        }
+    }
+    .clear-drawing-lots.disabled,
+    .start-drawing-lots.disabled {
+        cursor: not-allowed;
+        background-color: var(--gray-3);
+    }
+}
+
 .result-content {
-    width: 70vw;
     text-align: center;
 
-    .result-title {
-        padding: 20px;
-        font-size: 24px;
+    .result-top {
+        padding: 20px 0;
+
+        .result-title {
+            position: relative;
+            margin: 0 auto;
+            font-size: 22px;
+    
+            &::after {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-56%);
+                z-index: -1;
+                content: '';
+                border-radius: 40%;
+                width: 60%;
+                height: 24px;
+                background-color: var(--blue-1);
+            }
+        }
     }
     .drawing-results {
-        padding: 30px;
-        font-size: 26px;
+        padding: 20px 0;
         border-radius: 10px;
-        background: var(--button-5);
+        border: 2px solid var(--dark-3);
+        background-color: var(--white-2);
+        font-size: 20px;
+        word-wrap: break-word;
     }
 }
 </style>
